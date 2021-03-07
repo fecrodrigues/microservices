@@ -3,14 +3,20 @@ version: "3.7"
 services:
 
   frontend:
-    image: fcrodrigues/frontend-react
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes: 
+      - /app/node_modules
+      - ./frontend:/app
     ports: 
-      - 3001:3000
+      - 4200:4200
+      - 49153:49153
 
   nginx:
     build:
       context: ./nginx
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports: 
       - 80:80
     depends_on: 
