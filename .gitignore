@@ -44,3 +44,9 @@
 # System Files
 /frontend/.DS_Store
 /frontend/Thumbs.db
+
+# Byte-compiled / optimized / DLL files
+/api-users/__pycache__/
+
+# Distribution / packaging
+/api-users/api-users-venv
