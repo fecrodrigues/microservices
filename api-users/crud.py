@@ -1,4 +1,6 @@
+# pylint: disable=relative-beyond-top-level
 from sqlalchemy.orm import Session
+from fastapi.encoders import jsonable_encoder
 from . import models, schemas
 from datetime import datetime
 import bcrypt
@@ -12,23 +14,23 @@ def get_user_by_username(db: Session, username: str):
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
-def create_user(db: Session, user: schemas.UserCreate):
+def create_user(db: Session, user_obj: schemas.UserCreate):
     
-    hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt(14))
+    hashed_password = bcrypt.hashpw(user_obj.password.encode('utf-8'), bcrypt.gensalt(14))
     print(hashed_password)
-    print(user.password.encode('utf-8'))
-    print(bcrypt.checkpw(user.password.encode('utf-8'), hashed_password))
+    print(user_obj.password.encode('utf-8'))
+    print(bcrypt.checkpw(user_obj.password.encode('utf-8'), hashed_password))
     db_user = models.User(
-        username=user.username,
+        username=user_obj.username,
         password=str(hashed_password.decode('utf-8')),
-        advocate=user.advocate,
-        biography=user.biography,
-        birthdate=user.birthdate,
-        firstname=user.firstname,
-        lastname=user.lastname,
-        oabnumber=user.oabnumber,
-        areasofexpertise=user.areasofexpertise,
-        phone=user.phone,
+        advocate=user_obj.advocate,
+        biography=user_obj.biography,
+        birthdate=user_obj.birthdate,
+        firstname=user_obj.firstname,
+        lastname=user_obj.lastname,
+        oabnumber=user_obj.oabnumber,
+        areasofexpertise=user_obj.areasofexpertise,
+        phone=user_obj.phone,
         created=str(datetime.now())
         )
     db.add(db_user)
@@ -42,6 +44,25 @@ def delete_user(db: Session, user_uuid: str):
     #db.query(models.User).delete().where(models.User.uuid == user_uuid)
     db.commit()
     return True
+
+def update_user(db:Session, db_obj: models.User, user_obj: schemas.UserCreate):
+    obj_data = jsonable_encoder(db_obj)
+    print(obj_data)
+    if isinstance(user_obj, dict):
+        update_data = user_obj
+    else:
+        update_data = user_obj.dict(exclude_unset=True)
+    if update_data["password"]:
+        hashed_password = bcrypt.hashpw(user_obj.password.encode('utf-8'), bcrypt.gensalt(14))
+        del update_data["password"]
+        update_data["password"] = str(hashed_password.decode('utf-8'))
+    for field in obj_data:
+        if field in update_data:
+            setattr(db_obj, field, update_data[field])
+    db.add(db_obj)
+    db.commit()
+    db.refresh(db_obj)
+    return db_obj
 
 def get_credentials(db: Session, credentials: schemas.Credentials):
     print(credentials.username)
