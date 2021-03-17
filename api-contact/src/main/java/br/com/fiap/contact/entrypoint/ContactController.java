@@ -33,7 +33,7 @@ public class ContactController {
 	@ResponseStatus(code = HttpStatus.OK)
 	public ContactResp findById(@PathVariable String id) {		
 		return new ContactResp(
-				useCase.findById(id)
+				(Contact) useCase.findById(id).getEntity()
 		);
 	}
 	
