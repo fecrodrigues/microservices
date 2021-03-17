@@ -53,7 +53,6 @@ def test_create_and_get_user():
     assert data["phone"] == "+55 11 99999-9999"
     assert data["uuid"] == user_uuid
     assert data["created"] == user_created
-    return user_uuid
 
 # Create a duplicated user in database
 def test_create_duplicated_user():
@@ -116,26 +115,30 @@ def test_get_users():
     #Check response
     assert response.status_code == 200, response.text
     data = response.json()
-    print(data)
 
 #Update an user in database
 def test_update_user():
-    #print(user_uuid)
+    response = client.get(f"/logins/test_user@nodomain.com/")
+    assert response.status_code == 200, response.text
+    data = response.json()
+    user_uuid = data["uuid"]
+    print(user_uuid)
+
     response = client.put(
-        "/users/{user_uuid}",
-        json={
-            "username": "test_user@nodomain.com",
-            "advocate": "true",
-            "biography": "Text 2",
-            "birthdate": "00-00-0000",
-            "firstname": "Test",
-            "lastname": "User",
-            "oabnumber": "No Number",
-            "areasofexpertise": [
-                "No Area"
-            ],
-            "phone": "+55 11 98888-8888",
-            "password": "test@test"
+       f"/users/{user_uuid}",
+       json={
+           "username": "test_user@nodomain.com",
+           "advocate": "true",
+           "biography": "Text 2",
+           "birthdate": "00-00-0000",
+           "firstname": "Test",
+           "lastname": "User",
+           "oabnumber": "No Number",
+           "areasofexpertise": [
+               "No Area"
+           ],
+           "phone": "+55 11 98888-8888",
+           "password": "test@test"
         },
     )
     assert response.status_code == 200, response.text

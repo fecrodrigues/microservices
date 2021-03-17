@@ -1,7 +1,7 @@
 # pylint: disable=relative-beyond-top-level
 # pylint: disable=unused-variable
 from typing import List
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status, Header
 from sqlalchemy.orm import Session
 #from . import crud, models, schemas
 import crud, models, schemas
@@ -44,10 +44,6 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_users = crud.get_users(db, skip=skip, limit=limit)
     return db_users
 
-@app.get("/users/me")
-async def read_user_me():
-    return {"user_id": "the current user"}
-
 @app.get("/users/{user_uuid}", response_model=schemas.User)
 def read_user(user_uuid: str, db: Session = Depends(get_db)):
     try:
@@ -59,7 +55,7 @@ def read_user(user_uuid: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-@app.get("/users/{user_username}", response_model=schemas.User)
+@app.get("/logins/{user_username}", response_model=schemas.User)
 def read_username(user_username: str, db: Session = Depends(get_db)):
     print(user_username)
     db_user = crud.get_user_by_username(db, username=user_username)
