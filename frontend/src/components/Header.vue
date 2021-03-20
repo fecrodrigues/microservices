@@ -12,7 +12,7 @@
           <span class="icon-bar"></span>
         </button>
         <router-link class="navbar-brand" to="/">
-          <img class="img-responsive" src="assets/images/logo.png" alt="logo">
+          <img class="img-responsive" src="assets/images/logo.png" style="margin-top: -10px;" alt="logo">
         </router-link>
       </div>
 

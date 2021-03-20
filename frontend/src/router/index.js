@@ -38,9 +38,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-  console.log(to, 'hue')
   if(to.meta.secure === true) {
-    console.log('entrou if')
     if(!localStorage.getItem('userLogged') && to.path !== '/login') {
       next({ path: '/login' });  
     } else {

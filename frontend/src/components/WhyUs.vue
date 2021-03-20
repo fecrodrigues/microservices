@@ -5,8 +5,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="title-box">
-                        <p class="section-subtitle">We are known by</p>
-                        <h2 class="section-title">Why choose us</h2>
+                        <h2 class="section-subtitle">Porque nos escolher</h2>
+                        <!--<h2 class="section-title">Why choose us</h2>-->
                     </div>
                 </div>
             </div>
@@ -14,28 +14,28 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="choose-box">
-                        <span class="choose-icon ion-social-angular-outline"></span>
-                        <h3 class="choose-title">Best Attorneys</h3>
+                        <span class="choose-icon ion-person-stalker"></span>
+                        <h3 class="choose-title">Grandes Profissionais</h3>
                         <p class="choose-detail">
-                            Praesent dambus &amp; Send aug eget sollicitudin velit malesuada Aliquam blandit Mani leumat eget sollicauchnex
+                            Através das avaliações e comentarios dos usuários você consegue escolher os melhores profissionais
                         </p>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="choose-box">
                         <span class="choose-icon ion-compose"></span>
-                        <h3 class="choose-title">Highly Qualified</h3>
+                        <h3 class="choose-title">Sem Complicações</h3>
                         <p class="choose-detail">
-                            Praesent dambus &amp; Send aug eget sollicitudin velit malesuada Aliquam blandit Mani leumat eget sollicauchnex
+                            Nossa plataforma possui uma forma simples e objetiva para se encontrar um profissional e acompnhar seus processos
                         </p>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="choose-box">
                         <span class="choose-icon ion-android-bulb"></span>
-                        <h3 class="choose-title">Completely trustable</h3>
+                        <h3 class="choose-title">Completamente Transparente</h3>
                         <p class="choose-detail">
-                            Praesent dambus &amp; Send aug eget sollicitudin velit malesuada Aliquam blandit Mani leumat eget sollicauchnex
+                            Você pode ficar por dentro de todas as etapas do processo através da plataforma
                         </p>
                     </div>
                 </div>
