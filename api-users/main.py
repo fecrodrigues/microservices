@@ -1,9 +1,7 @@
-# pylint: disable=relative-beyond-top-level
 # pylint: disable=unused-variable
 from typing import List
 from fastapi import Depends, FastAPI, HTTPException, status, Header
 from sqlalchemy.orm import Session
-#from . import crud, models, schemas
 import crud, models, schemas
 from database import SessionLocal, engine
 from uuid import UUID
@@ -48,8 +46,8 @@ def create_user(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
     return user
 
 @app.get("/users/", response_model=List[schemas.User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    db_users = crud.get_users(db, skip=skip, limit=limit)
+def read_users(skip: int = 0, limit: int = 100, advocate: bool = False, db: Session = Depends(get_db)):
+    db_users = crud.get_users(db, skip=skip, limit=limit, advocate=advocate)
     return db_users
 
 @app.get("/users/{user_uuid}", response_model=schemas.User)
