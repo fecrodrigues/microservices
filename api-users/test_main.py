@@ -114,7 +114,7 @@ def test_get_users():
     response = client.get("/users/?skip=0&limit=100")
     #Check response
     assert response.status_code == 200, response.text
-    data = response.json()
+    #data = response.json()
 
 #Update an user in database
 def test_update_user():
