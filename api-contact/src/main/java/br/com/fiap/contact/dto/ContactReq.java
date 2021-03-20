@@ -2,6 +2,9 @@ package br.com.fiap.contact.dto;
 
 import java.util.List;
 
+import javax.json.bind.annotation.JsonbAnnotation;
+
+@JsonbAnnotation
 public class ContactReq {
 	
 	private String idPessoaUm;

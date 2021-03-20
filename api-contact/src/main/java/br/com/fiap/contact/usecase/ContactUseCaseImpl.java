@@ -1,24 +1,19 @@
 package br.com.fiap.contact.usecase;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.bson.Document;
-import org.springframework.stereotype.Service;
 
 import br.com.fiap.contact.dataprovider.ContactRepository;
-import br.com.fiap.contact.dto.ErrorResp;
 import br.com.fiap.contact.entity.Contact;
 import br.com.fiap.contact.entity.Message;
 
 @ApplicationScoped
-@Service
 public class ContactUseCaseImpl implements ContactUseCase {
 
 	private final ContactRepository repository;
@@ -28,16 +23,11 @@ public class ContactUseCaseImpl implements ContactUseCase {
 	}
 	
 	@Override
-	public Response findById(String id) {
-			Optional<Contact> opt = repository.find("_id",id).firstResultOptional();
+	public Contact findById(String id) {
+			Contact contact = repository.find("_id",id).firstResultOptional()
+					.orElseThrow(() -> new NotFoundException("Not found contact from id "+id+"!"));
 			
-			if(opt.isEmpty()) {
-				return Response.status(Status.NOT_FOUND)
-						.entity(new ErrorResp("not_found", "Not found contact from id "+id+"!"))
-						.build();
-			}
-			
-			return Response.ok(opt.get()).build();
+			return contact;
 	}
 
 	@Override
@@ -48,25 +38,25 @@ public class ContactUseCaseImpl implements ContactUseCase {
 		
 		
 		return repository.find(doc).firstResultOptional()
-				.orElseThrow(() -> new NotFoundException("Not found contact from person "+idPessoaUm+" and "+"!"));
+				.orElseThrow(() -> new NotFoundException("Not found contact from person "+idPessoaUm+" and "+idPessoaDois+"!"));
 	}
 
 	@Override
 	public Contact createContact(Contact contact) {
 		repository.persist(contact);
 		
-		return (Contact) findById(contact.getId()).getEntity();
+		return findById(contact.getId());
 	}
 
 	@Override
 	public Message createMessage(String idContact, Message msg) {
-		Contact contact = (Contact) findById(idContact).getEntity();
+		Contact contact = findById(idContact);
 
 		contact.getMessages().add(msg);
 		
 		repository.persistOrUpdate(contact);
 		
-		return ((Contact) findById(idContact).getEntity()).getMessages().stream()
+		return findById(idContact).getMessages().stream()
 				.filter(message -> message.getId().equals(msg.getId()))
 				.findFirst().get();
 		
@@ -79,11 +69,17 @@ public class ContactUseCaseImpl implements ContactUseCase {
 
 	@Override
 	public void removeMessage(String idContact, String idMessage) {
-		Contact contact = (Contact) findById(idContact).getEntity();
-
-		List<Message> newMessages = contact.getMessages().stream()
-					.filter(message -> !message.getId().equals(idMessage))
-					.collect(Collectors.toList());
+		Contact contact = findById(idContact);
+		Stream<Message> streamMessages =  contact.getMessages().stream();
+		
+		if(streamMessages.anyMatch(message -> message.getId().equals(idMessage))) {
+			throw new NotFoundException("Not found message from id "+idMessage);
+		}
+			
+		List<Message> newMessages = streamMessages
+				.filter(message -> !message.getId().equals(idMessage))
+				.collect(Collectors.toList());
+	
 		
 		contact.setMessages(newMessages);
 		repository.persistOrUpdate(contact);

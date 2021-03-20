@@ -1,14 +1,19 @@
 package br.com.fiap.contact.dto;
 
+import javax.json.bind.annotation.JsonbPropertyOrder;
+
+@JsonbPropertyOrder(value = {"type","errorCode","message"})
 public class ErrorResp {
 
 	private String type;
+	private Integer errorCode;
 	private String message;
 	
 	public ErrorResp () {}
 	
-	public ErrorResp(String type, String message) {
+	public ErrorResp(String type, Integer errorCode, String message) {
 		this.type = type;
+		this.errorCode = errorCode; 
 		this.message = message;
 	}
 
@@ -18,6 +23,14 @@ public class ErrorResp {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Integer getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
 	}
 
 	public String getMessage() {

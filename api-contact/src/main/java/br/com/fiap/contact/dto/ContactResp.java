@@ -3,12 +3,10 @@ package br.com.fiap.contact.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
+import javax.json.bind.annotation.JsonbAnnotation;
 import br.com.fiap.contact.entity.Contact;
 
-@JsonInclude(content = Include.NON_NULL)
+@JsonbAnnotation
 public class ContactResp {
 
 	private String id;
