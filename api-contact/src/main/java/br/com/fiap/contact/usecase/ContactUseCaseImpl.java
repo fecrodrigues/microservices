@@ -2,15 +2,18 @@ package br.com.fiap.contact.usecase;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.NotFoundException;
 
 import org.bson.Document;
-import org.springframework.stereotype.Service;
 
 import br.com.fiap.contact.dataprovider.ContactRepository;
 import br.com.fiap.contact.entity.Contact;
 import br.com.fiap.contact.entity.Message;
 
-@Service
+@ApplicationScoped
 public class ContactUseCaseImpl implements ContactUseCase {
 
 	private final ContactRepository repository;
@@ -21,7 +24,10 @@ public class ContactUseCaseImpl implements ContactUseCase {
 	
 	@Override
 	public Contact findById(String id) {
-		return repository.find("_id",id).firstResult();
+			Contact contact = repository.find("_id",id).firstResultOptional()
+					.orElseThrow(() -> new NotFoundException("Not found contact from id "+id+"!"));
+			
+			return contact;
 	}
 
 	@Override
@@ -31,7 +37,8 @@ public class ContactUseCaseImpl implements ContactUseCase {
 		doc.put("idPessoaDois", idPessoaDois);
 		
 		
-		return repository.find(doc).firstResult();
+		return repository.find(doc).firstResultOptional()
+				.orElseThrow(() -> new NotFoundException("Not found contact from person "+idPessoaUm+" and "+idPessoaDois+"!"));
 	}
 
 	@Override
@@ -42,14 +49,14 @@ public class ContactUseCaseImpl implements ContactUseCase {
 	}
 
 	@Override
-	public Message createMessage(String idConact, Message msg) {
-		Contact contact = findById(idConact);
+	public Message createMessage(String idContact, Message msg) {
+		Contact contact = findById(idContact);
 
 		contact.getMessages().add(msg);
 		
 		repository.persistOrUpdate(contact);
 		
-		return findById(idConact).getMessages().stream()
+		return findById(idContact).getMessages().stream()
 				.filter(message -> message.getId().equals(msg.getId()))
 				.findFirst().get();
 		
@@ -63,10 +70,16 @@ public class ContactUseCaseImpl implements ContactUseCase {
 	@Override
 	public void removeMessage(String idContact, String idMessage) {
 		Contact contact = findById(idContact);
-
-		List<Message> newMessages = contact.getMessages().stream()
-					.filter(message -> !message.getId().equals(idMessage))
-					.collect(Collectors.toList());
+		Stream<Message> streamMessages =  contact.getMessages().stream();
+		
+		if(streamMessages.anyMatch(message -> message.getId().equals(idMessage))) {
+			throw new NotFoundException("Not found message from id "+idMessage);
+		}
+			
+		List<Message> newMessages = streamMessages
+				.filter(message -> !message.getId().equals(idMessage))
+				.collect(Collectors.toList());
+	
 		
 		contact.setMessages(newMessages);
 		repository.persistOrUpdate(contact);
