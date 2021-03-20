@@ -73,8 +73,10 @@ def get_credentials(db: Session, credentials: schemas.Credentials):
         return False
 #    print(db_credentials.password)
     print(db_credentials.password.encode('utf-8'))
+    print(db_credentials.uuid)
     print('User password:')
     print(credentials.password.encode('utf-8'))
     valid_pass = bcrypt.checkpw(credentials.password.encode('utf-8'), db_credentials.password.encode('utf-8'))
     print(valid_pass)
+    #return db_credentials.uuid
     return valid_pass

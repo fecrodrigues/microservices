@@ -115,7 +115,9 @@ def login(data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
     access_token = manager.create_access_token(
         data=dict(sub=credentials.username)
     )
-    return {'access_token': access_token, 'token_type': 'bearer'}
+    print(db_credentials)
+    db_user = crud.get_user_by_username(db, username=credentials.username)
+    return {'uuid': db_user.uuid, 'access_token': access_token, 'token_type': 'bearer'}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
