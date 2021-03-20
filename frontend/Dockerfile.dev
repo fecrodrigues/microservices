@@ -11,12 +11,11 @@ WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
 RUN npm install
-RUN npm install -g @angular/cli
 
 COPY . .
 
-EXPOSE 4200
+EXPOSE 8080
 EXPOSE 49153
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "serve"]
 #ENTRYPOINT ["ng", "serve", "--host", "0.0.0.0", "--disable-host-check"]
