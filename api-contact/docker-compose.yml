@@ -1,0 +1,23 @@
+--- 
+version: "2"
+
+services: 
+  mongoDB: 
+    image: "mongo:latest"
+    restart: always
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports: 
+      - "27888:27017"
+
+  api-contact: 
+    image: "img_api_contact"
+    restart: always
+    environment: 
+      QUARKUS_MONGODB_DATABASE: apiContact
+      QUARKUS_MONGODB_CONNECTION-STRING: "mongodb://mongoadmin:secret@mongoDB:27888/?authSource=admin"
+    ports: 
+      - "8080:8080"
+    depends_on: 
+      - mongoDB
