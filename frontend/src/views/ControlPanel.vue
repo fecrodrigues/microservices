@@ -78,8 +78,8 @@ export default {
     async created() {
         const userID = localStorage.getItem('userLogged');
 
-        let rawResponse = await fetch('http://localhost:8001/users/' + userID);
-        let rawResponseList = await fetch('http://localhost:8001/users?limit=999&advocate=true');
+        let rawResponse = await fetch('http://localhost/api/v1/users/' + userID);
+        let rawResponseList = await fetch('http://localhost/api/v1/users?limit=999&advocate=true');
 
         const userInfo = await rawResponse.json();
         const lawyers = await rawResponseList.json();

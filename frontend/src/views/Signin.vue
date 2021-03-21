@@ -97,7 +97,7 @@ export default {
 
             Swal2.fire('Efetuando cadastro... Aguarde');
             Swal2.showLoading();
-            const rawResponse = await fetch('http://localhost:8001/users', {
+            const rawResponse = await fetch('http://localhost/api/v1/users', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

@@ -96,7 +96,7 @@ export default {
 
             Swal2.fire('Efetuando atualização cadastral... Aguarde');
             Swal2.showLoading();
-            const rawResponse = await fetch('http://localhost:8001/users/' + userUuid, {
+            const rawResponse = await fetch('http://localhost/api/v1/users/' + userUuid, {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
@@ -135,7 +135,7 @@ export default {
 
                     Swal2.fire('Efetuando exclusão da conta... Aguarde');
                     Swal2.showLoading();
-                    const rawResponse = await fetch('http://localhost:8001/users/' + userInfo.uuid, {
+                    const rawResponse = await fetch('http://localhost/api/v1/users/' + userInfo.uuid, {
                         method: 'DELETE'
                     });
 
