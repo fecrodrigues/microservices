@@ -96,24 +96,29 @@ export default {
     },
     methods: {
         getAreasOfExpertise(areasofexpertise) {
-            return areasofexpertise.map((area) => {
-                switch(area) {
-                    case 'civel':
-                        return 'Direito Cível';
-                    case 'trabalhista':
-                        return 'Direito Trabalhista';
-                    case 'tributario':
-                        return 'Direito Tributário';
-                    case 'familia':
-                        return 'Direito de Família';
-                    case 'previdenciario':
-                        return 'Direito Previdenciário';
-                    case 'criminal':
-                        return 'Direito Criminal';
-                    default:
-                        return '';
-                }
-            })
+            if(areasofexpertise) {
+                return areasofexpertise.map((area) => {
+                    switch(area) {
+                        case 'civel':
+                            return 'Direito Cível';
+                        case 'trabalhista':
+                            return 'Direito Trabalhista';
+                        case 'tributario':
+                            return 'Direito Tributário';
+                        case 'familia':
+                            return 'Direito de Família';
+                        case 'previdenciario':
+                            return 'Direito Previdenciário';
+                        case 'criminal':
+                            return 'Direito Criminal';
+                        default:
+                            return '';
+                    }
+                })
+            } else {
+                return [];
+            }
+            
         }
     },
     data() {
