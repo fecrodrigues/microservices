@@ -32,9 +32,9 @@ O tópico criado foi: contact-messages.
 
 Foram criadas as seguintes imagens:
 
-brenomsf/api_contact_jvm
-fcrodrigues/vuejs-frontend-prod:latest
-fcrodrigues/python-api:latest
+- brenomsf/api_contact_jvm
+- fcrodrigues/vuejs-frontend-prod:latest
+- fcrodrigues/python-api:latest
 
 No projeto existem dois arquivos do docker-compose sendo o docker-compose.yml para subir o ambiente de desenvolvimento e o docker-compose-prod.yml para subir o ambiente de produção.
 
