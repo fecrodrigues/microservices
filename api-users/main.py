@@ -1,9 +1,7 @@
-# pylint: disable=relative-beyond-top-level
 # pylint: disable=unused-variable
 from typing import List
 from fastapi import Depends, FastAPI, HTTPException, status, Header
 from sqlalchemy.orm import Session
-#from . import crud, models, schemas
 import crud, models, schemas
 from database import SessionLocal, engine
 from uuid import UUID
@@ -12,6 +10,7 @@ import uvicorn
 from fastapi_login import LoginManager
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_login.exceptions import InvalidCredentialsException
+from fastapi.middleware.cors import CORSMiddleware
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -21,6 +20,13 @@ manager = LoginManager(SECRET, tokenUrl='/auth/token')
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dependency
 def get_db():
@@ -40,8 +46,8 @@ def create_user(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
     return user
 
 @app.get("/users/", response_model=List[schemas.User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    db_users = crud.get_users(db, skip=skip, limit=limit)
+def read_users(skip: int = 0, limit: int = 100, advocate: bool = False, db: Session = Depends(get_db)):
+    db_users = crud.get_users(db, skip=skip, limit=limit, advocate=advocate)
     return db_users
 
 @app.get("/users/{user_uuid}", response_model=schemas.User)
@@ -107,7 +113,9 @@ def login(data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
     access_token = manager.create_access_token(
         data=dict(sub=credentials.username)
     )
-    return {'access_token': access_token, 'token_type': 'bearer'}
+    print(db_credentials)
+    db_user = crud.get_user_by_username(db, username=credentials.username)
+    return {'uuid': db_user.uuid, 'access_token': access_token, 'token_type': 'bearer'}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

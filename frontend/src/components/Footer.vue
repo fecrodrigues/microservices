@@ -1,7 +1,6 @@
 <template>
 
-     <!-- Footer -->
-    <footer class="footer">
+    <footer  v-bind:class="{ 'navbar navbar-fixed-bottom': footerFixed }" class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-sm-6">
@@ -25,7 +24,10 @@
 
 <script>
 export default {
-    name:'Footer'
+    name:'Footer',
+    props: {
+        footerFixed: Boolean
+    }
 }
 </script>
 

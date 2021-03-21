@@ -8,51 +8,53 @@
                     <p>Bem-vindo ao Jusnexo</p>
                     <p>Cadastre-se para aproveitar a plataforma</p>
                     
-                    <form class="form-signin">
+                    <form class="form-signin" @submit.prevent="createUser">
                         <span id="reauth-email" class="reauth-email"></span>
                         
-                        <input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
-                        <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required>
+                        <input v-model="username" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+                        <input v-model="password"  type="password" id="inputPassword" class="form-control" placeholder="Senha" required>
 
-                        <input type="text" class="form-control" placeholder="Nome" required>
-                        <input type="text" class="form-control" placeholder="Sobrenome" required>
-                        <input type="date" class="form-control" placeholder="Data de Aniversário" required>
-                        <input type="text" class="form-control" placeholder="Celular" required>
+                        <input v-model="firstname" type="text" class="form-control" placeholder="Nome" required>
+                        <input v-model="lastname" type="text" class="form-control" placeholder="Sobrenome" required>
+                        <input v-model="birthdate" type="date" class="form-control" placeholder="Data de Aniversário" required>
+                        <input v-model="phone" type="text" class="form-control" placeholder="Celular" required>
 
-                        <p class="form-paragraph"><input type="checkbox"/> Sou um advogado</p>
+                        <p class="form-paragraph"><input v-model="advocate" v-bind:value="true" type="checkbox"/> Sou um advogado</p>
 
-                        <textarea class="form-control" rows="10" placeholder="Conte-nos um pouco sobre sua carreira (biografia)" required></textarea>
+                        <div v-if="advocate === true">
+                            <textarea v-model="biography" class="form-control" rows="10" placeholder="Conte-nos um pouco sobre sua carreira (biografia)" required></textarea>
 
-                        <div class="col-md-12">
-                            <p class="form-paragraph">Área(s) de atuação</p>
+                            <div class="col-md-12">
+                                <p class="form-paragraph">Área(s) de atuação</p>
 
-                            <div class="col-md-6 col-sm-12">
-                                <p class="form-paragraph"><input type="checkbox"/> Direito Cível</p>
+                                <div class="col-md-6 col-sm-12">
+                                    <p class="form-paragraph"><input value="civel" id="areasofexpertise" v-model="areasofexpertise" type="checkbox"/> Direito Cível</p>
+                                </div>
+                                
+                                <div class="col-md-6 col-sm-12">
+                                    <p class="form-paragraph"><input value="trabalhista" id="areasofexpertise" v-model="areasofexpertise" type="checkbox"/> Direito Trabalhista</p>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <p class="form-paragraph"><input value="tributario" id="areasofexpertise" v-model="areasofexpertise" type="checkbox"/> Direito Tributário</p>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <p class="form-paragraph"><input value="familia" id="areasofexpertise" v-model="areasofexpertise" type="checkbox"/> Direito de Família</p>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <p class="form-paragraph"><input value="previdenciario" id="areasofexpertise" v-model="areasofexpertise" type="checkbox"/> Direito Previdenciário</p>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12">
+                                    <p class="form-paragraph"><input value="criminal" id="areasofexpertise" v-model="areasofexpertise" type="checkbox"/> Direito Criminal</p>
+                                </div>
+
                             </div>
-                            
-                            <div class="col-md-6 col-sm-12">
-                                <p class="form-paragraph"><input type="checkbox"/> Direito Trabalhista</p>
-                            </div>
 
-                            <div class="col-md-6 col-sm-12">
-                                <p class="form-paragraph"><input type="checkbox"/> Direito Tributário</p>
-                            </div>
-
-                            <div class="col-md-6 col-sm-12">
-                                <p class="form-paragraph"><input type="checkbox"/> Direito de Família</p>
-                            </div>
-
-                            <div class="col-md-6 col-sm-12">
-                                <p class="form-paragraph"><input type="checkbox"/> Direito Previdenciário</p>
-                            </div>
-
-                            <div class="col-md-6 col-sm-12">
-                                <p class="form-paragraph"><input type="checkbox"/> Direito Criminal</p>
-                            </div>
-
+                            <input type="text" v-model="oabnumber" class="form-control" placeholder="Número da OAB" required>
                         </div>
-
-                        <input type="text" class="form-control" placeholder="Número da OAB" required>
                        
                         <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Criar Conta</button>
                     </form><!-- /form -->
@@ -67,6 +69,7 @@
 <script>
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import Swal2 from 'sweetalert2';
 
 export default {
     name: 'signin',
@@ -74,10 +77,56 @@ export default {
         Header,
         Footer
     },
+    data() {
+        return {
+            username: null,
+            advocate: false,
+            biography: null,
+            birthdate: null,
+            firstname: null,
+            lastname: null,
+            oabnumber: null,
+            areasofexpertise: [],
+            phone: null,
+            password: null 
+        }
+    },
     methods: {
         
-        createUser: (e) => {
-            e.preventDefault();
+        async createUser() {
+
+            Swal2.fire('Efetuando cadastro... Aguarde');
+            Swal2.showLoading();
+            const rawResponse = await fetch('http://localhost:8001/users', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    username: this.username, 
+                    advocate: this.advocate, 
+                    biography: this.biography, 
+                    birthdate: this.birthdate, 
+                    firstname: this.firstname, 
+                    lastname: this.lastname, 
+                    oabnumber: this.oabnumber, 
+                    areasofexpertise: this.areasofexpertise, 
+                    phone: this.phone, 
+                    password: this.password 
+                })
+            })
+
+            const response = await rawResponse.json();
+            Swal2.close();
+
+            if(response.uuid) {
+                localStorage.setItem('userLogged', response.uuid);
+                this.$router.push({ name: 'ControlPanel' });
+            } else {
+                Swal2.fire(response.detail, '', 'error' )
+            }
+            
         }
 
     }

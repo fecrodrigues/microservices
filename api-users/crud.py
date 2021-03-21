@@ -1,7 +1,5 @@
-# pylint: disable=relative-beyond-top-level
 from sqlalchemy.orm import Session
 from fastapi.encoders import jsonable_encoder
-#from . import models, schemas
 import models, schemas
 from datetime import datetime
 import bcrypt
@@ -12,7 +10,12 @@ def get_user(db: Session, user_uuid: str):
 def get_user_by_username(db: Session, username: str):
     return db.query(models.User).filter(models.User.username == username).first()
 
-def get_users(db: Session, skip: int = 0, limit: int = 100):
+#def get_users(db: Session, skip: int = 0, limit: int = 100):
+#    return db.query(models.User).offset(skip).limit(limit).all()
+
+def get_users(db: Session, skip: int = 0, limit: int = 100, advocate: bool = False):
+    if advocate:
+        return db.query(models.User).filter(models.User.advocate == advocate).offset(skip).limit(limit).all()
     return db.query(models.User).offset(skip).limit(limit).all()
 
 def create_user(db: Session, user_obj: schemas.UserCreate):
@@ -73,8 +76,10 @@ def get_credentials(db: Session, credentials: schemas.Credentials):
         return False
 #    print(db_credentials.password)
     print(db_credentials.password.encode('utf-8'))
+    print(db_credentials.uuid)
     print('User password:')
     print(credentials.password.encode('utf-8'))
     valid_pass = bcrypt.checkpw(credentials.password.encode('utf-8'), db_credentials.password.encode('utf-8'))
     print(valid_pass)
+    #return db_credentials.uuid
     return valid_pass

@@ -21,3 +21,23 @@ services:
       - 80:80
     depends_on: 
       - frontend
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=users
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+  web:
+    build: 
+      context: ./api-users
+      dockerfile: Dockerfile 
+    command: python ./api-users/main.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db

@@ -25,7 +25,7 @@
         </div>
     </div><!-- /container -->
 
-    <Footer />
+    <Footer footerFixed="true"/>
   </div>
 </template>
 
@@ -33,6 +33,7 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Swal2 from 'sweetalert2';
 
 export default {
   name: 'Login',
@@ -51,12 +52,45 @@ export default {
   },
   methods: {
         
-    doLogin() {
+    async doLogin() {
         console.log(this.email, this.senha, 'logar')
 
-        this.$router.push({ path: '/painel' });
+        var details = {
+            'username': this.email,
+            'password': this.senha,
+            'grant_type': 'password'
+        };
 
-        localStorage.setItem('userLogged', this.email);
+        var formBody = [];
+            for (var property in details) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(details[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+
+        formBody = formBody.join("&");
+
+        Swal2.fire('Efetuando login... Aguarde');
+        Swal2.showLoading();
+        const rawResponse = await fetch('http://localhost:8001/auth/token', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formBody
+        })
+
+        const response = await rawResponse.json();
+        Swal2.close();
+
+        if(response.uuid) {
+            localStorage.setItem('userLogged', response.uuid);
+            this.$router.push({ path: '/painel' });
+        } else {
+            Swal2.fire(response.detail, '', 'error')
+        }
+      
     }
 
   }
