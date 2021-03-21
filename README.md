@@ -32,7 +32,7 @@ O tópico criado foi: contact-messages.
 
 Foram criadas as seguintes imagens:
 
-- brenomsf/api_contact_jvm
+- brenomsf/api_contact_jvm:latest
 - fcrodrigues/vuejs-frontend-prod:latest
 - fcrodrigues/python-api:latest
 
