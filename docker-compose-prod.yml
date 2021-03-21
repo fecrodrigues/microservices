@@ -6,6 +6,8 @@ services:
     image: fcrodrigues/vuejs-frontend-prod:latest
     ports: 
       - 80:80
+    depends_on:
+      - web
 
   db:
     image: postgres:latest
