@@ -22,6 +22,12 @@ public class Message {
 		this.dataDeCriacao = msgReq.getDataDeCriacao();
 	}
 	
+	public Message(MessageKafka msgKafka) {
+		this.id = new ObjectId().toHexString();
+		this.idEmissor = msgKafka.getIdEmissor();
+		this.descricao = msgKafka.getDescricao();
+		this.dataDeCriacao = msgKafka.getDataDeCriacao();
+	}
 	
 	public String getId() {
 		return id;
