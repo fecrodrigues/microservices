@@ -27,7 +27,7 @@
 
         <ul v-if="loggedIn" class="nav navbar-nav navbar-right">
             <li class="active"><router-link to="/">Inicio</router-link></li>
-            <li><router-link to="/meus-dados">Meus Dados</router-link></li>
+            <li><router-link to="/painel">Painel</router-link></li>
             <li><router-link @click="logout" to="/">Sair</router-link></li>
         </ul>
       </div><!-- /.navbar-collapse -->

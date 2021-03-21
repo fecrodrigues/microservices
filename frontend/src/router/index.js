@@ -8,12 +8,6 @@ const routes = [
     component: Home,
   },
   {
-    path: '/about',
-    name: 'About',
-    meta: { secure: true },
-    component: () => import('../views/About.vue')
-  },
-  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue') 
@@ -28,6 +22,12 @@ const routes = [
     name: 'ControlPanel',
     meta: { secure: true },
     component: () => import('../views/ControlPanel.vue')
+  },
+  {
+    path: '/perfil',
+    name: 'LawyerProfile',
+    meta: { secure: true },
+    component: () => import('../views/LawyerProfile.vue')
   }
 ]
 
