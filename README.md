@@ -41,6 +41,8 @@ No projeto existem dois arquivos do docker-compose sendo o docker-compose.yml pa
 No projeto front-end existe um arquivo Dockerfile.prod que contém uma variável de ambiente (VUE_APP_BACKEND_API) com a URL da API do back-end.
 Caso queira subir algum ambiente que não seja na máquina local, deve-se alterar a URL para uma que corresponda ao ambiente.
 Após a alteração da URL é necessária a execução do build da imagem do front-end.
+
 Ex.: Play With Docker
+
 ENV VUE_APP_BACKEND_API=http://ip172-18-0-52-c1bq9t3e75e000ar0vu0-80.direct.labs.play-with-docker.com
 Para desenvolvimento local não é necessária nenhuma alteração, o sistema já tenta a conexão direta com o localhost.
