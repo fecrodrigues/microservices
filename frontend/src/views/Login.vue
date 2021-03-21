@@ -72,7 +72,7 @@ export default {
 
         Swal2.fire('Efetuando login... Aguarde');
         Swal2.showLoading();
-        const rawResponse = await fetch('http://localhost:8001/auth/token', {
+        const rawResponse = await fetch('http://localhost/api/v1/auth/token', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
