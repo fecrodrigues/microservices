@@ -126,7 +126,11 @@ export default {
 </script>
 
 <style scoped>
-    
+    .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+        color: black;
+        background-color: #f0f0f0;
+    }
+
     .wrap {
         min-height: 100%;
     }
