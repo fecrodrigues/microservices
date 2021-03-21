@@ -4,6 +4,7 @@ FROM node:14.16-alpine
 # Informando diretorio de trabalho
 WORKDIR /app
 
+ENV VUE_APP_BACKEND_API=http://localhost
 # Adicionando variaveis de ambiente necessarias
 #ENV PATH /app/node_modules/.bin:$PATH
 
