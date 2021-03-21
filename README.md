@@ -11,6 +11,7 @@ Possui uma página home, uma área logada e uma página de cadastro.
 Na área logada para um usuário comun é possível consultar os profissionais e editar o seu perfil.
 Para o advogado, por enquanto, é possível editar o seu perfil.
 
+
 ## API Users Microservice
 
 Este microserviço foi criado em python e foi utilizado o framework FastAPI e banco de dados Postgre SQL para criar os endpoints.
@@ -29,7 +30,17 @@ O tópico criado foi: contact-messages.
 
 ## Docker
 
+Foram criadas as seguintes imagens:
 
+brenomsf/api_contact_jvm
+fcrodrigues/vuejs-frontend-prod:latest
+fcrodrigues/python-api:latest
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+No projeto existem dois arquivos do docker-compose sendo o docker-compose.yml para subir o ambiente de desenvolvimento e o docker-compose-prod.yml para subir o ambiente de produção.
 
+No projeto front-end existe um arquivo Dockerfile.prod que contém uma variável de ambiente (VUE_APP_BACKEND_API) com a URL da API do back-end.
+Caso queira subir algum ambiente que não seja na máquina local, deve-se alterar a URL para uma que corresponda ao ambiente.
+Após a alteração da URL é necessária a execução do build da imagem do front-end.
+Ex.: Play With Docker
+ENV VUE_APP_BACKEND_API=http://ip172-18-0-52-c1bq9t3e75e000ar0vu0-80.direct.labs.play-with-docker.com
+Para desenvolvimento local não é necessária nenhuma alteração, o sistema já tenta a conexão direta com o localhost.
