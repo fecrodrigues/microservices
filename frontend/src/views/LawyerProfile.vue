@@ -97,7 +97,7 @@ export default {
     created() {
         const lawyerID = this.$route.query.idAdv;
          
-        fetch('http://localhost/api/v1/users/' + lawyerID)
+        fetch(process.env.VUE_APP_BACKEND_API + '/api/v1/users/' + lawyerID)
             .then((response => response.json()))
             .then(res => {
                 this.lawyer = res;

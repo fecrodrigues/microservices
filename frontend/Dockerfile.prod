@@ -7,6 +7,8 @@ RUN npm install
 
 COPY . .
 
+ENV VUE_APP_BACKEND_API=http://ip172-18-0-52-c1bq9t3e75e000ar0vu0-80.direct.labs.play-with-docker.com
+
 RUN npm run build
 
 FROM nginx:latest
