@@ -1,23 +1,44 @@
---- 
-version: "2"
+version: '3.7'
 
 services: 
-  mongoDB: 
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    build:
+      context: kafka
+      dockerfile: Dockerfile
+    links:
+      - zookeeper:zk
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: $CF_HOST_IP
+      KAFKA_ZOOKEEPER_CONNECT: zk:2181
+      KAFKA_MESSAGE_MAX_BYTES: 2000000
+      KAFKA_CREATE_TOPICS: "contact-messages:2:2"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+
+  mongo-db: 
     image: "mongo:latest"
     restart: always
     environment: 
       MONGO_INITDB_ROOT_USERNAME: mongoadmin
       MONGO_INITDB_ROOT_PASSWORD: secret
     ports: 
-      - "27888:27017"
+      - "27017:27017"
+    volumes:
+      - ./db/:/data/db
 
   api-contact: 
-    image: "brenomsf/api_contact_jvm:latest"
+    image: "img_api_contact"
     restart: always
-    environment: 
-      QUARKUS_MONGODB_DATABASE: apiContact
-      QUARKUS_MONGODB_CONNECTION-STRING: "mongodb://mongoadmin:secret@mongoDB:27888/?authSource=admin"
     ports: 
-      - "8080:8080"
-    depends_on: 
-      - mongo
+      - "8081:8080"
+    links:
+      - mongo-db
