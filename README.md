@@ -23,7 +23,7 @@ E execução dos testes pode ser feita através do comando "pytest".
 
 Este microserviço foi criado em Java utilizando o framework Quarkus para gerenciamento das mensagens entre o cliente e o advogado.
 Foi utilizado o banco de dados MongoDB para a persistência dos dados.
-A documentação da API pode ser visualizada após subir o serviço no link http://IP:8080/q/swagger-ui 
+A documentação da API pode ser visualizada após subir o serviço no link http://IP:8081/q/swagger-ui 
 A imagem da aplicação está como pública no DockerHub disponível com o nome: brenomsf/api_contact_jvm.
 Foi criado um processo assíncrono para o armazenamento da mensagem em uma fila do Kafka.
 O tópico criado foi: contact-messages.
