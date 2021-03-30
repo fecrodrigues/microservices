@@ -71,7 +71,7 @@ export default {
 
         Swal2.fire('Efetuando login... Aguarde');
         Swal2.showLoading();
-        const rawResponse = await fetch(process.env.VUE_APP_BACKEND_API + '/api/v1/auth/token', {
+        const rawResponse = await fetch('/api/v1/auth/token', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

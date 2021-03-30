@@ -96,7 +96,7 @@ export default {
 
             Swal2.fire('Efetuando atualização cadastral... Aguarde');
             Swal2.showLoading();
-            const rawResponse = await fetch(process.env.VUE_APP_BACKEND_API + '/api/v1/users/' + userUuid, {
+            const rawResponse = await fetch('/api/v1/users/' + userUuid, {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
@@ -114,7 +114,6 @@ export default {
                 Swal2.fire(response.detail, '', 'error' )
             }
             
-            console.log(response, 'response')
         },
 
         deleteUser() {
@@ -135,7 +134,7 @@ export default {
 
                     Swal2.fire('Efetuando exclusão da conta... Aguarde');
                     Swal2.showLoading();
-                    const rawResponse = await fetch(process.env.VUE_APP_BACKEND_API + '/api/v1/users/' + userInfo.uuid, {
+                    const rawResponse = await fetch('/api/v1/users/' + userInfo.uuid, {
                         method: 'DELETE'
                     });
 
