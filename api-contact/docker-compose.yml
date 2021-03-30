@@ -12,7 +12,7 @@ services:
       - "27888:27017"
 
   api-contact: 
-    image: "img_api_contact"
+    image: "brenomsf/api_contact_jvm:latest"
     restart: always
     environment: 
       QUARKUS_MONGODB_DATABASE: apiContact
@@ -20,4 +20,4 @@ services:
     ports: 
       - "8080:8080"
     depends_on: 
-      - mongoDB
+      - mongo
