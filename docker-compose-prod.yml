@@ -3,7 +3,9 @@ version: "3.7"
 services:
 
   frontend:
-    image: fcrodrigues/vuejs-frontend-prod:latest
+    image: fcrodrigues/vuejs-frontend-prod:2.0
+    deploy:
+      replicas: 3
     ports: 
       - 80:80
     depends_on:
@@ -11,6 +13,8 @@ services:
 
   db:
     image: postgres:latest
+    deploy:
+      replicas: 5
     environment:
       - POSTGRES_DB=users
       - POSTGRES_USER=postgres
@@ -20,6 +24,8 @@ services:
   
   web:
     image: fcrodrigues/python-api:latest
+    deploy:
+      replicas: 5
     ports:
       - "8001:8000"
     depends_on:
