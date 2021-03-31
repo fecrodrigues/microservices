@@ -41,7 +41,7 @@ services:
       - ./db/:/data/db
 
   api-contact: 
-    image: "img_api_contact"
+    image: "brenomsf/api_contact_jvm:latest"
     restart: always
     ports: 
       - "8081:8080"
