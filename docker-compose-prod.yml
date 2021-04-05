@@ -72,8 +72,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: secret
     ports: 
       - "27017:27017"
-    volumes:
-      - ./db/:/data/db
+    #volumes:
+      #- ./db/:/data/db
 
   api-contact: 
     image: "brenomsf/api_contact_jvm:latest"
@@ -84,3 +84,6 @@ services:
       - "8081:8080"
     links:
       - mongo-db
+    depends_on:
+      - mongo-db
+      - kafka-mq
